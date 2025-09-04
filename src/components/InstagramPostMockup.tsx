@@ -2,12 +2,23 @@ import { Camera, Heart, MessageCircle, Send, MoreHorizontal } from "lucide-react
 
 interface InstagramPostMockupProps {
   postData: {
-    menuItem: string;
-    description: string;
-    price?: string;
     restaurantName: string;
+    restaurantHandle: string;
     location: string;
-    image?: string;
+    menuItems?: Array<{
+      name: string;
+      description: string;
+      price?: string;
+      image?: string;
+    }>;
+    singleItem?: {
+      name: string;
+      description: string;
+      price?: string;
+      image?: string;
+    };
+    userImage?: string;
+    postType: 'menu' | 'single' | 'user-image';
     tagline: string;
     caption: string;
     hashtags: string[];

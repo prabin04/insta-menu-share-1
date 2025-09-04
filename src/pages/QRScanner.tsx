@@ -9,7 +9,7 @@ import { QrCode, Camera, Instagram, Sparkles, Upload, ArrowLeft } from "lucide-r
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import InstagramStoryMockup from "@/components/InstagramStoryMockup";
+import InstagramPostMockup from "@/components/InstagramPostMockup";
 
 interface MenuItemData {
   id: string;
@@ -29,7 +29,7 @@ const QRScanner = () => {
   const [menuItem, setMenuItem] = useState<MenuItemData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isGenerating, setIsGenerating] = useState(false);
-  const [generatedStory, setGeneratedStory] = useState<any>(null);
+  const [generatedPost, setGeneratedPost] = useState<any>(null);
   const [stylePreference, setStylePreference] = useState("elegant");
   const [brandColors, setBrandColors] = useState("#FF6B6B,#4ECDC4");
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
@@ -97,14 +97,14 @@ const QRScanner = () => {
     }
   };
 
-  const generateStory = async () => {
+  const generatePost = async () => {
     if (!menuItem) return;
 
     setIsGenerating(true);
     
     // Simulate AI generation
     setTimeout(() => {
-      const mockGeneratedStory = {
+      const mockGeneratedPost = {
         tagline: generateTagline(menuItem.name, stylePreference),
         caption: generateCaption(menuItem),
         hashtags: generateHashtags(menuItem),
@@ -113,12 +113,12 @@ const QRScanner = () => {
         image: uploadedImage || menuItem.image,
       };
       
-      setGeneratedStory(mockGeneratedStory);
+      setGeneratedPost(mockGeneratedPost);
       setIsGenerating(false);
       
       toast({
-        title: "Story Generated!",
-        description: "Your Instagram Story is ready to share",
+        title: "Post Generated!",
+        description: "Your Instagram Post is ready to share",
       });
     }, 2000);
   };
@@ -161,10 +161,10 @@ const QRScanner = () => {
     return baseHashtags.slice(0, 6);
   };
 
-  const downloadStory = () => {
+  const downloadPost = () => {
     toast({
       title: "Download Started",
-      description: "Your Instagram Story is being prepared for download",
+      description: "Your Instagram Post is being prepared for download",
     });
   };
 
@@ -209,7 +209,7 @@ const QRScanner = () => {
               Back
             </Button>
             <div>
-              <h1 className="text-xl font-bold">Create Instagram Story</h1>
+              <h1 className="text-xl font-bold">Create Instagram Post</h1>
               <p className="text-sm text-muted-foreground">Share {menuItem.name} on Instagram</p>
             </div>
           </div>
@@ -306,35 +306,35 @@ const QRScanner = () => {
               </div>
 
               <Button 
-                onClick={generateStory} 
+                onClick={generatePost} 
                 className="w-full" 
                 disabled={isGenerating}
               >
                 {isGenerating ? (
                   <>
                     <Sparkles className="w-4 h-4 mr-2 animate-spin" />
-                    Generating Story...
+                    Generating Post...
                   </>
                 ) : (
                   <>
                     <Sparkles className="w-4 h-4 mr-2" />
-                    Generate Instagram Story
+                    Generate Instagram Post
                   </>
                 )}
               </Button>
             </CardContent>
           </Card>
 
-          {/* Story Preview */}
+          {/* Post Preview */}
           <Card>
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div>
-                  <CardTitle>Story Preview</CardTitle>
-                  <CardDescription>Your Instagram Story mockup</CardDescription>
+                  <CardTitle>Post Preview</CardTitle>
+                  <CardDescription>Your Instagram Post mockup</CardDescription>
                 </div>
-                {generatedStory && (
-                  <Button onClick={downloadStory} size="sm">
+                {generatedPost && (
+                  <Button onClick={downloadPost} size="sm">
                     <Camera className="w-4 h-4 mr-2" />
                     Download
                   </Button>
@@ -342,21 +342,21 @@ const QRScanner = () => {
               </div>
             </CardHeader>
             <CardContent>
-              {!generatedStory ? (
+              {!generatedPost ? (
                 <div className="text-center py-12 text-muted-foreground">
                   <Instagram className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                  <p>Generate your story to see the preview</p>
+                  <p>Generate your post to see the preview</p>
                 </div>
               ) : (
                 <div className="flex justify-center">
-                  <InstagramStoryMockup 
-                    storyData={{
+                  <InstagramPostMockup 
+                    postData={{
                       menuItem: menuItem.name,
                       description: menuItem.description,
                       price: menuItem.price,
                       restaurantName: menuItem.restaurantName,
                       location: menuItem.location,
-                      ...generatedStory,
+                      ...generatedPost,
                     }}
                   />
                 </div>

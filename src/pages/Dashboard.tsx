@@ -99,10 +99,10 @@ const Dashboard = () => {
                     variant="outline" 
                     size="lg" 
                     className="h-12"
-                    onClick={() => navigate('/story-generator')}
+                    onClick={() => navigate('/post-generator')}
                   >
                     <Instagram className="w-4 h-4 mr-2" />
-                    Instagram Story
+                    Instagram Post
                   </Button>
                   <Button variant="outline" size="lg" className="h-12">
                     <Calendar className="w-4 h-4 mr-2" />

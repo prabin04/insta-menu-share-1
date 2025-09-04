@@ -120,7 +120,7 @@ const Index = () => {
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">For Customers</h2>
               <p className="text-xl text-muted-foreground">
-                Scan a QR code at your favorite restaurant to create stunning Instagram Stories
+                Scan a QR code at your favorite restaurant to create stunning Instagram Posts
               </p>
             </div>
             
@@ -128,7 +128,7 @@ const Index = () => {
               <div>
                 <h3 className="text-2xl font-bold mb-4">Share Your Dining Experience</h3>
                 <p className="text-muted-foreground mb-6">
-                  When you scan a QR code on a menu item, instantly generate beautiful Instagram Stories 
+                  When you scan a QR code on a menu item, instantly generate beautiful Instagram Posts 
                   with AI-powered captions, hashtags, and professional styling. Perfect for food bloggers 
                   and social media enthusiasts!
                 </p>
@@ -143,7 +143,7 @@ const Index = () => {
                     <div className="w-8 h-8 rounded-full bg-pink-100 flex items-center justify-center">
                       <Sparkles className="w-4 h-4 text-pink-600" />
                     </div>
-                    <span>AI generates your story</span>
+                    <span>AI generates your post</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-full bg-pink-100 flex items-center justify-center">
