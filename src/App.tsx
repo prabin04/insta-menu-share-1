@@ -8,6 +8,7 @@ import Dashboard from "./pages/Dashboard";
 import MenuBuilder from "./pages/MenuBuilder";
 import ContentPreview from "./pages/ContentPreview";
 import InstagramPostGenerator from "./pages/InstagramPostGenerator";
+import EnhancedPostGenerator from "./pages/EnhancedPostGenerator";
 import QRScanner from "./pages/QRScanner";
 import NotFound from "./pages/NotFound";
 
@@ -25,6 +26,7 @@ const App = () => (
           <Route path="/menu-builder" element={<MenuBuilder />} />
           <Route path="/content-preview" element={<ContentPreview />} />
           <Route path="/post-generator" element={<InstagramPostGenerator />} />
+          <Route path="/enhanced-post-generator" element={<EnhancedPostGenerator />} />
           <Route path="/qr-scanner" element={<QRScanner />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

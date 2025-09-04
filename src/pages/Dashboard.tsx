@@ -99,11 +99,23 @@ const Dashboard = () => {
                     variant="outline" 
                     size="lg" 
                     className="h-12"
+                    onClick={() => navigate('/enhanced-post-generator')}
+                  >
+                    <Instagram className="w-4 h-4 mr-2" />
+                    Enhanced Posts
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    size="lg" 
+                    className="h-12"
                     onClick={() => navigate('/post-generator')}
                   >
                     <Instagram className="w-4 h-4 mr-2" />
-                    Instagram Post
+                    Single Post
                   </Button>
+                </div>
+                
+                <div className="grid grid-cols-1 gap-3">
                   <Button variant="outline" size="lg" className="h-12">
                     <Calendar className="w-4 h-4 mr-2" />
                     Schedule Posts

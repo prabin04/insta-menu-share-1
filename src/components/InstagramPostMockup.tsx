@@ -65,6 +65,141 @@ const InstagramPostMockup = ({ postData }: InstagramPostMockupProps) => {
 
   const styleClasses = getStyleClasses(postData.style);
 
+  const renderMenuGrid = () => {
+    if (!postData.menuItems || postData.menuItems.length === 0) return null;
+    
+    const items = postData.menuItems.slice(0, 4); // Max 4 items for grid
+    
+    if (items.length === 1) {
+      return (
+        <div className="relative w-full h-48 bg-gray-100">
+          {items[0].image ? (
+            <img 
+              src={items[0].image} 
+              alt={items[0].name}
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center">
+              <Camera className="w-12 h-12 opacity-40" />
+            </div>
+          )}
+          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+            <h2 className="text-white text-lg font-bold mb-1">{items[0].name}</h2>
+            <p className="text-white/90 text-sm mb-2">
+              {items[0].description.length > 60 ? items[0].description.substring(0, 60) + '...' : items[0].description}
+            </p>
+            {items[0].price && (
+              <p className="text-yellow-300 font-semibold">{items[0].price}</p>
+            )}
+          </div>
+        </div>
+      );
+    }
+    
+    if (items.length === 2) {
+      return (
+        <div className="grid grid-cols-2 gap-1 h-48">
+          {items.map((item, index) => (
+            <div key={index} className="relative bg-gray-100">
+              {item.image ? (
+                <img 
+                  src={item.image} 
+                  alt={item.name}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center">
+                  <Camera className="w-8 h-8 opacity-40" />
+                </div>
+              )}
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-2">
+                <h3 className="text-white text-sm font-bold">{item.name}</h3>
+                {item.price && (
+                  <p className="text-yellow-300 text-xs font-semibold">{item.price}</p>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      );
+    }
+    
+    // 3 or 4 items - 2x2 grid
+    return (
+      <div className="grid grid-cols-2 gap-1 h-48">
+        {items.map((item, index) => (
+          <div key={index} className="relative bg-gray-100">
+            {item.image ? (
+              <img 
+                src={item.image} 
+                alt={item.name}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center">
+                <Camera className="w-6 h-6 opacity-40" />
+              </div>
+            )}
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-1">
+              <h3 className="text-white text-xs font-bold truncate">{item.name}</h3>
+              {item.price && (
+                <p className="text-yellow-300 text-xs font-semibold">{item.price}</p>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  };
+
+  const renderSingleItem = () => {
+    if (!postData.singleItem) return null;
+    
+    return (
+      <div className="relative w-full h-48 bg-gray-100">
+        {postData.singleItem.image ? (
+          <img 
+            src={postData.singleItem.image} 
+            alt={postData.singleItem.name}
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center">
+            <Camera className="w-12 h-12 opacity-40" />
+          </div>
+        )}
+        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+          <h2 className="text-white text-lg font-bold mb-1">{postData.singleItem.name}</h2>
+          <p className="text-white/90 text-sm mb-2">
+            {postData.singleItem.description.length > 60 ? postData.singleItem.description.substring(0, 60) + '...' : postData.singleItem.description}
+          </p>
+          {postData.singleItem.price && (
+            <p className="text-yellow-300 font-semibold">{postData.singleItem.price}</p>
+          )}
+        </div>
+      </div>
+    );
+  };
+
+  const renderUserImage = () => {
+    if (!postData.userImage) return null;
+    
+    return (
+      <div className="relative w-full h-48 bg-gray-100">
+        <img 
+          src={postData.userImage} 
+          alt="User uploaded food"
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+          <h2 className="text-white text-lg font-bold mb-1">{postData.tagline}</h2>
+          <p className="text-white/90 text-sm">Delicious food at {postData.restaurantName}</p>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="relative w-80 h-80 bg-white rounded-lg overflow-hidden shadow-2xl border border-gray-200">
       {/* Instagram Post Header */}
@@ -83,35 +218,10 @@ const InstagramPostMockup = ({ postData }: InstagramPostMockupProps) => {
         <MoreHorizontal className="w-5 h-5 text-gray-600" />
       </div>
 
-      {/* Main Image */}
-      <div className="relative w-full h-48 bg-gray-100">
-        {postData.image ? (
-          <img 
-            src={postData.image} 
-            alt={postData.menuItem}
-            className="w-full h-full object-cover"
-            onError={(e) => {
-              const target = e.target as HTMLImageElement;
-              target.style.display = 'none';
-              target.nextElementSibling?.classList.remove('hidden');
-            }}
-          />
-        ) : null}
-        <div className={`w-full h-full flex items-center justify-center ${postData.image ? 'hidden' : ''}`}>
-          <Camera className="w-12 h-12 opacity-40" />
-        </div>
-        
-        {/* Overlay with Menu Item Info */}
-        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
-          <h2 className="text-white text-lg font-bold mb-1">{postData.menuItem}</h2>
-          <p className="text-white/90 text-sm mb-2">
-            {postData.description.length > 60 ? postData.description.substring(0, 60) + '...' : postData.description}
-          </p>
-          {postData.price && (
-            <p className="text-yellow-300 font-semibold">{postData.price}</p>
-          )}
-        </div>
-      </div>
+      {/* Main Content Area */}
+      {postData.postType === 'menu' && renderMenuGrid()}
+      {postData.postType === 'single' && renderSingleItem()}
+      {postData.postType === 'user-image' && renderUserImage()}
 
       {/* Instagram Post Actions */}
       <div className="flex items-center justify-between p-4">
@@ -130,10 +240,10 @@ const InstagramPostMockup = ({ postData }: InstagramPostMockupProps) => {
       {/* Caption Section */}
       <div className="px-4 pb-4">
         <p className="text-sm text-gray-900 mb-2">
-          <span className="font-semibold">{postData.restaurantName || "Restaurant"}</span> {postData.caption}
+          <span className="font-semibold">{postData.restaurantHandle || postData.restaurantName}</span> {postData.caption}
         </p>
         <div className="flex flex-wrap gap-1">
-          {postData.hashtags.slice(0, 4).map((tag, index) => (
+          {postData.hashtags.slice(0, 6).map((tag, index) => (
             <span key={index} className="text-xs text-blue-600">
               {tag}
             </span>
