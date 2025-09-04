@@ -7,6 +7,8 @@ import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import MenuBuilder from "./pages/MenuBuilder";
 import ContentPreview from "./pages/ContentPreview";
+import InstagramStoryGenerator from "./pages/InstagramStoryGenerator";
+import QRScanner from "./pages/QRScanner";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -22,6 +24,8 @@ const App = () => (
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/menu-builder" element={<MenuBuilder />} />
           <Route path="/content-preview" element={<ContentPreview />} />
+          <Route path="/story-generator" element={<InstagramStoryGenerator />} />
+          <Route path="/qr-scanner" element={<QRScanner />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
