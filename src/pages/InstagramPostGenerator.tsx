@@ -262,7 +262,7 @@ const InstagramPostGenerator = () => {
                 <Label htmlFor="location">Location</Label>
                 <Input
                   id="location"
-                  placeholder="e.g., New York, NY"
+                  placeholder="e.g., Brønnøysund, Br"
                   value={postData.location}
                   onChange={(e) => handleInputChange('location', e.target.value)}
                 />

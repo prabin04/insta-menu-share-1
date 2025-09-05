@@ -170,8 +170,8 @@ const Index = () => {
                         <span className="text-sm font-bold">BV</span>
                       </div>
                       <div>
-                        <p className="text-sm font-semibold">Bella Vista</p>
-                        <p className="text-xs opacity-75">New York, NY</p>
+                        <p className="text-sm font-semibold">Svang</p>
+                        <p className="text-xs opacity-75">Brønnøysund, Br</p>
                       </div>
                     </div>
                     

@@ -314,7 +314,7 @@ const EnhancedPostGenerator = () => {
                   <Label htmlFor="restaurantName">Restaurant Name *</Label>
                   <Input
                     id="restaurantName"
-                    placeholder="e.g., Bella Vista"
+                    placeholder="e.g., Svang"
                     value={postData.restaurantName}
                     onChange={(e) => handleInputChange('restaurantName', e.target.value)}
                   />
@@ -334,7 +334,7 @@ const EnhancedPostGenerator = () => {
                   <Label htmlFor="location">Location</Label>
                   <Input
                     id="location"
-                    placeholder="e.g., New York, NY"
+                    placeholder="e.g., Brønnøysund, Br"
                     value={postData.location}
                     onChange={(e) => handleInputChange('location', e.target.value)}
                   />

@@ -44,7 +44,7 @@ const QRScanner = () => {
       price: "$24.00",
       image: "/menu.webp",
       restaurantName: "Svang",
-      location: "New York, NY"
+      location: "Brønnøysund, Br"
     },
     {
       id: "2", 
@@ -53,7 +53,7 @@ const QRScanner = () => {
       price: "$68.00",
       image: "/menu.webp",
       restaurantName: "Svang",
-      location: "New York, NY"
+      location: "Brønnøysund, Br"
     },
     {
       id: "3",
@@ -62,7 +62,7 @@ const QRScanner = () => {
       price: "$18.00",
       image: "/menu.webp",
       restaurantName: "Svang", 
-      location: "New York, NY"
+      location: "Brønnøysund, Br"
     }
   ];
 
