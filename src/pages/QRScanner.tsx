@@ -21,6 +21,13 @@ interface MenuItemData {
   location: string;
 }
 
+interface MenuItem {
+  name: string;
+  description: string;
+  price: string;
+  image?: string;
+}
+
 const QRScanner = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -31,7 +38,7 @@ const QRScanner = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedPost, setGeneratedPost] = useState<any>(null);
   const [stylePreference, setStylePreference] = useState("elegant");
-  const [brandColors, setBrandColors] = useState("#FF6B6B,#4ECDC4");
+  const [selectedMenu, setSelectedMenu] = useState<string>("");
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -73,6 +80,43 @@ const QRScanner = () => {
     { id: "playful", name: "Playful", description: "Fun and energetic" },
   ];
 
+  const predefinedMenus = [
+    {
+      id: "signature-dishes",
+      name: "Signature Dishes",
+      items: [
+        { name: "Truffle Arancini", description: "Delicate truffle arancini with aged parmesan and micro herbs", price: "$24.00" },
+        { name: "Wagyu Beef Tenderloin", description: "Pan-seared wagyu beef with cherry gastrique and seasonal vegetables", price: "$68.00" },
+        { name: "Chocolate Lava Cake", description: "Decadent chocolate soufflé with vanilla bean ice cream", price: "$18.00" }
+      ]
+    },
+    {
+      id: "appetizers",
+      name: "Appetizers",
+      items: [
+        { name: "Burrata Caprese", description: "Fresh burrata with heirloom tomatoes and basil oil", price: "$16.00" },
+        { name: "Seared Scallops", description: "Pan-seared scallops with cauliflower puree and truffle oil", price: "$22.00" }
+      ]
+    },
+    {
+      id: "main-courses",
+      name: "Main Courses",
+      items: [
+        { name: "Duck Confit", description: "Slow-cooked duck leg with cherry gastrique and roasted vegetables", price: "$32.00" },
+        { name: "Lobster Risotto", description: "Creamy risotto with fresh lobster and saffron", price: "$38.00" },
+        { name: "Rack of Lamb", description: "Herb-crusted rack of lamb with mint chimichurri", price: "$42.00" }
+      ]
+    },
+    {
+      id: "desserts",
+      name: "Desserts",
+      items: [
+        { name: "Tiramisu", description: "Classic Italian tiramisu with espresso and mascarpone", price: "$14.00" },
+        { name: "Crème Brûlée", description: "Vanilla bean crème brûlée with fresh berries", price: "$12.00" }
+      ]
+    }
+  ];
+
   useEffect(() => {
     // Simulate QR code scan - in real app, this would parse QR code data
     const itemId = searchParams.get('item') || '1';
@@ -97,6 +141,52 @@ const QRScanner = () => {
     }
   };
 
+  const handleMenuSelection = (menuId: string) => {
+    const selectedMenuData = predefinedMenus.find(menu => menu.id === menuId);
+    if (selectedMenuData) {
+      setSelectedMenu(menuId);
+      
+      // Auto-generate post when menu is selected
+      setTimeout(() => {
+        generatePostFromMenu(selectedMenuData);
+      }, 500);
+    }
+  };
+
+  const generatePostFromMenu = async (menu: any) => {
+    if (!menuItem) return;
+
+    setIsGenerating(true);
+    
+    // Simulate AI generation
+    setTimeout(() => {
+      const mockGeneratedPost = {
+        tagline: generateTagline(menu.items[0]?.name || menuItem.name, stylePreference),
+        caption: generateCaption(menuItem),
+        hashtags: generateHashtags(menuItem),
+        style: stylePreference,
+        menuItems: menu.items.map((item: any) => ({
+          ...item,
+          image: '/menu.webp'
+        })),
+        singleItem: menu.items[0] ? {
+          ...menu.items[0],
+          image: '/menu.webp'
+        } : undefined,
+        userImage: uploadedImage || menuItem.image,
+        postType: menu.items.length > 1 ? 'menu' : 'single',
+      };
+      
+      setGeneratedPost(mockGeneratedPost);
+      setIsGenerating(false);
+      
+      toast({
+        title: "Post Generated!",
+        description: "Your Instagram Post is ready to share",
+      });
+    }, 2000);
+  };
+
   const generatePost = async () => {
     if (!menuItem) return;
 
@@ -109,8 +199,13 @@ const QRScanner = () => {
         caption: generateCaption(menuItem),
         hashtags: generateHashtags(menuItem),
         style: stylePreference,
-        colors: brandColors.split(','),
-        image: uploadedImage || menuItem.image,
+        singleItem: {
+          name: menuItem.name,
+          description: menuItem.description,
+          price: menuItem.price,
+          image: uploadedImage || menuItem.image
+        },
+        postType: 'single' as const,
       };
       
       setGeneratedPost(mockGeneratedPost);
@@ -280,6 +375,24 @@ const QRScanner = () => {
                 </div>
               </div>
 
+              {/* Menu Selection */}
+              <div className="space-y-4">
+                <h3 className="font-semibold">Choose Your Menu</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {predefinedMenus.map((menu) => (
+                    <Button
+                      key={menu.id}
+                      variant={selectedMenu === menu.id ? "default" : "outline"}
+                      onClick={() => handleMenuSelection(menu.id)}
+                      className="h-auto p-4 flex flex-col items-start"
+                    >
+                      <div className="font-semibold mb-1">{menu.name}</div>
+                      <div className="text-xs opacity-75">{menu.items.length} items</div>
+                    </Button>
+                  ))}
+                </div>
+              </div>
+
               {/* Style Preference */}
               <div className="space-y-2">
                 <Label htmlFor="style">Choose Your Style</Label>
@@ -298,17 +411,6 @@ const QRScanner = () => {
                     ))}
                   </SelectContent>
                 </Select>
-              </div>
-
-              {/* Brand Colors */}
-              <div className="space-y-2">
-                <Label htmlFor="brandColors">Brand Colors (comma-separated)</Label>
-                <Input
-                  id="brandColors"
-                  placeholder="#FF6B6B,#4ECDC4"
-                  value={brandColors}
-                  onChange={(e) => setBrandColors(e.target.value)}
-                />
               </div>
 
               {/* Image Upload */}
@@ -343,6 +445,7 @@ const QRScanner = () => {
                 onClick={generatePost} 
                 className="w-full" 
                 disabled={isGenerating}
+                size="lg"
               >
                 {isGenerating ? (
                   <>
@@ -352,7 +455,7 @@ const QRScanner = () => {
                 ) : (
                   <>
                     <Sparkles className="w-4 h-4 mr-2" />
-                    Generate Instagram Post
+                    Generate Custom Post
                   </>
                 )}
               </Button>
@@ -379,24 +482,66 @@ const QRScanner = () => {
               {!generatedPost ? (
                 <div className="text-center py-12 text-muted-foreground">
                   <Instagram className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                  <p>Generate your post to see the preview</p>
+                  <p>Select a menu to generate your post</p>
                 </div>
               ) : (
-                <div className="flex justify-center">
-                  <InstagramPostMockup 
-                    postData={{
-                      menuItem: menuItem.name,
-                      description: menuItem.description,
-                      price: menuItem.price,
-                      restaurantName: menuItem.restaurantName,
-                      location: menuItem.location,
-                      ...generatedPost,
-                    }}
-                    onCopyCaption={copyCaption}
-                    onDownloadImage={downloadPost}
-                    onRegenerateCaption={regenerateCaption}
-                    onCaptionChange={handleCaptionChange}
-                  />
+                <div className="space-y-4">
+                  {/* Menu Image Preview */}
+                  <div className="p-4 bg-muted rounded-lg">
+                    <h4 className="font-semibold mb-3">Menu Image:</h4>
+                    <div className="flex items-center gap-4">
+                      {menuItem.image && (
+                        <img 
+                          src={menuItem.image} 
+                          alt={menuItem.name}
+                          className="w-20 h-20 rounded-lg object-cover border-2 border-white shadow-sm"
+                        />
+                      )}
+                      <div>
+                        <h5 className="font-semibold text-lg">{menuItem.name}</h5>
+                        <p className="text-sm text-muted-foreground mb-1">{menuItem.description}</p>
+                        <p className="text-sm font-medium text-primary">{menuItem.price}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Visual Preview */}
+                  <div className="flex justify-center">
+                    <InstagramPostMockup 
+                      postData={{
+                        restaurantName: menuItem.restaurantName,
+                        restaurantHandle: `@${menuItem.restaurantName.toLowerCase().replace(/\s+/g, '_')}`,
+                        location: menuItem.location,
+                        singleItem: {
+                          name: menuItem.name,
+                          description: menuItem.description,
+                          price: menuItem.price,
+                          image: menuItem.image
+                        },
+                        postType: 'single' as const,
+                        ...generatedPost,
+                      }}
+                      onCopyCaption={copyCaption}
+                      onDownloadImage={downloadPost}
+                      onRegenerateCaption={regenerateCaption}
+                      onCaptionChange={handleCaptionChange}
+                    />
+                  </div>
+                  
+                  {/* Text Preview */}
+                  <div className="p-4 bg-muted rounded-lg">
+                    <h4 className="font-semibold mb-2">Caption Preview:</h4>
+                    <p className="text-sm mb-2">
+                      <span className="font-semibold">{menuItem.restaurantName}</span> {generatedPost.caption}
+                    </p>
+                    <div className="flex flex-wrap gap-1">
+                      {generatedPost.hashtags.slice(0, 6).map((tag: string, index: number) => (
+                        <span key={index} className="text-xs text-blue-600">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               )}
             </CardContent>

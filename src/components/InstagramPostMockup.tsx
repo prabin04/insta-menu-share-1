@@ -101,6 +101,10 @@ const InstagramPostMockup = ({ postData, onCopyCaption, onDownloadImage, onRegen
               src={items[0].image} 
               alt={items[0].name}
               className="w-full h-full object-cover"
+              onError={(e) => {
+                console.log('Image failed to load:', items[0].image);
+                e.currentTarget.style.display = 'none';
+              }}
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center">
@@ -130,6 +134,10 @@ const InstagramPostMockup = ({ postData, onCopyCaption, onDownloadImage, onRegen
                   src={item.image} 
                   alt={item.name}
                   className="w-full h-full object-cover"
+                  onError={(e) => {
+                    console.log('Image failed to load:', item.image);
+                    e.currentTarget.style.display = 'none';
+                  }}
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center">
@@ -158,6 +166,10 @@ const InstagramPostMockup = ({ postData, onCopyCaption, onDownloadImage, onRegen
                 src={item.image} 
                 alt={item.name}
                 className="w-full h-full object-cover"
+                onError={(e) => {
+                  console.log('Image failed to load:', item.image);
+                  e.currentTarget.style.display = 'none';
+                }}
               />
             ) : (
               <div className="w-full h-full flex items-center justify-center">
@@ -186,6 +198,10 @@ const InstagramPostMockup = ({ postData, onCopyCaption, onDownloadImage, onRegen
             src={postData.singleItem.image} 
             alt={postData.singleItem.name}
             className="w-full h-full object-cover"
+            onError={(e) => {
+              console.log('Image failed to load:', postData.singleItem.image);
+              e.currentTarget.style.display = 'none';
+            }}
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center">
