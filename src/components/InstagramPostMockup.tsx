@@ -1,4 +1,4 @@
-import { Camera, Heart, MessageCircle, Send, MoreHorizontal } from "lucide-react";
+import { Camera, Heart, MessageCircle, Send, MoreHorizontal, Copy, Download } from "lucide-react";
 
 interface InstagramPostMockupProps {
   postData: {
@@ -25,9 +25,11 @@ interface InstagramPostMockupProps {
     style: string;
     colors: string[];
   };
+  onCopyCaption?: () => void;
+  onDownloadImage?: () => void;
 }
 
-const InstagramPostMockup = ({ postData }: InstagramPostMockupProps) => {
+const InstagramPostMockup = ({ postData, onCopyCaption, onDownloadImage }: InstagramPostMockupProps) => {
   const getStyleClasses = (style: string) => {
     const styles = {
       minimal: {
@@ -250,6 +252,24 @@ const InstagramPostMockup = ({ postData }: InstagramPostMockupProps) => {
           ))}
         </div>
         <p className="text-xs text-gray-500 mt-2">View all comments</p>
+        
+        {/* Action Buttons */}
+        <div className="flex gap-2 mt-3 pt-3 border-t border-gray-100">
+          <button
+            onClick={onCopyCaption}
+            className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-xs bg-blue-50 text-blue-600 rounded-md hover:bg-blue-100 transition-colors"
+          >
+            <Copy className="w-3 h-3" />
+            Copy Caption
+          </button>
+          <button
+            onClick={onDownloadImage}
+            className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-xs bg-green-50 text-green-600 rounded-md hover:bg-green-100 transition-colors"
+          >
+            <Download className="w-3 h-3" />
+            Download
+          </button>
+        </div>
       </div>
     </div>
   );

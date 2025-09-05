@@ -168,6 +168,18 @@ const QRScanner = () => {
     });
   };
 
+  const copyCaption = () => {
+    if (!generatedPost || !menuItem) return;
+    
+    const fullCaption = `${menuItem.restaurantName} ${generatedPost.caption}\n\n${generatedPost.hashtags.join(' ')}`;
+    
+    navigator.clipboard.writeText(fullCaption);
+    toast({
+      title: "Caption Copied!",
+      description: "The complete caption has been copied to your clipboard",
+    });
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -358,6 +370,8 @@ const QRScanner = () => {
                       location: menuItem.location,
                       ...generatedPost,
                     }}
+                    onCopyCaption={copyCaption}
+                    onDownloadImage={downloadPost}
                   />
                 </div>
               )}

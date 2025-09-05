@@ -156,6 +156,18 @@ const InstagramPostGenerator = () => {
     });
   };
 
+  const copyCaption = () => {
+    if (!generatedPost) return;
+    
+    const fullCaption = `${postData.restaurantName} ${generatedPost.caption}\n\n${generatedPost.hashtags.join(' ')}`;
+    
+    navigator.clipboard.writeText(fullCaption);
+    toast({
+      title: "Caption Copied!",
+      description: "The complete caption has been copied to your clipboard",
+    });
+  };
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -350,6 +362,8 @@ const InstagramPostGenerator = () => {
                       ...postData,
                       ...generatedPost,
                     }}
+                    onCopyCaption={copyCaption}
+                    onDownloadImage={downloadPost}
                   />
                 </div>
               )}
