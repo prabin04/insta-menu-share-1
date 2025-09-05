@@ -231,15 +231,8 @@ const EnhancedPostGenerator = () => {
   };
 
   const generatePlaceholderImage = (itemName: string) => {
-    const foodImages = [
-      'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=600&h=600&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=600&h=600&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600&h=600&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=600&h=600&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1565299507177-b0ac66763828?w=600&h=600&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=600&h=600&fit=crop&q=80'
-    ];
-    return foodImages[Math.floor(Math.random() * foodImages.length)];
+    // Use the menu.webp from public folder as default
+    return '/menu.webp';
   };
 
   const downloadPost = () => {
@@ -259,6 +252,28 @@ const EnhancedPostGenerator = () => {
       title: "Caption Copied!",
       description: "The complete caption has been copied to your clipboard",
     });
+  };
+
+  const handleCaptionChange = (newCaption: string) => {
+    setGeneratedPost(prev => prev ? { ...prev, caption: newCaption } : null);
+  };
+
+  const regenerateCaption = async () => {
+    if (!postData.restaurantName || !postData.restaurantHandle) return;
+    
+    setIsGenerating(true);
+    
+    // Simulate AI regeneration
+    setTimeout(() => {
+      const newCaption = generateCaption(postData);
+      setGeneratedPost(prev => prev ? { ...prev, caption: newCaption } : null);
+      setIsGenerating(false);
+      
+      toast({
+        title: "Caption Regenerated!",
+        description: "New AI-generated caption is ready",
+      });
+    }, 1500);
   };
 
   return (
@@ -505,6 +520,8 @@ const EnhancedPostGenerator = () => {
                     }}
                     onCopyCaption={copyCaption}
                     onDownloadImage={downloadPost}
+                    onRegenerateCaption={regenerateCaption}
+                    onCaptionChange={handleCaptionChange}
                   />
                 </div>
               )}

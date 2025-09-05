@@ -178,7 +178,7 @@ const Index = () => {
                     <div className="flex-1 flex flex-col justify-center items-center text-center">
                       <div className="w-24 h-24 rounded-2xl bg-white/20 mb-4 flex items-center justify-center overflow-hidden">
                         <img 
-                          src="https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=200&h=200&fit=crop&q=80" 
+                          src="/menu.webp" 
                           alt="Truffle Arancini"
                           className="w-full h-full object-cover"
                         />

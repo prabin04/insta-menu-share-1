@@ -1,4 +1,5 @@
-import { Camera, Heart, MessageCircle, Send, MoreHorizontal, Copy, Download } from "lucide-react";
+import { Camera, Heart, MessageCircle, Send, MoreHorizontal, Copy, Download, Edit3, Sparkles, Check, X } from "lucide-react";
+import { useState } from "react";
 
 interface InstagramPostMockupProps {
   postData: {
@@ -27,9 +28,14 @@ interface InstagramPostMockupProps {
   };
   onCopyCaption?: () => void;
   onDownloadImage?: () => void;
+  onRegenerateCaption?: () => void;
+  onCaptionChange?: (caption: string) => void;
 }
 
-const InstagramPostMockup = ({ postData, onCopyCaption, onDownloadImage }: InstagramPostMockupProps) => {
+const InstagramPostMockup = ({ postData, onCopyCaption, onDownloadImage, onRegenerateCaption, onCaptionChange }: InstagramPostMockupProps) => {
+  const [isEditingCaption, setIsEditingCaption] = useState(false);
+  const [editedCaption, setEditedCaption] = useState(postData.caption);
+
   const getStyleClasses = (style: string) => {
     const styles = {
       minimal: {
@@ -66,6 +72,21 @@ const InstagramPostMockup = ({ postData, onCopyCaption, onDownloadImage }: Insta
   };
 
   const styleClasses = getStyleClasses(postData.style);
+
+  const handleSaveCaption = () => {
+    onCaptionChange?.(editedCaption);
+    setIsEditingCaption(false);
+  };
+
+  const handleCancelEdit = () => {
+    setEditedCaption(postData.caption);
+    setIsEditingCaption(false);
+  };
+
+  const handleRegenerateCaption = () => {
+    onRegenerateCaption?.();
+    setIsEditingCaption(false);
+  };
 
   const renderMenuGrid = () => {
     if (!postData.menuItems || postData.menuItems.length === 0) return null;
@@ -241,9 +262,60 @@ const InstagramPostMockup = ({ postData, onCopyCaption, onDownloadImage }: Insta
 
       {/* Caption Section */}
       <div className="px-4 pb-4">
-        <p className="text-sm text-gray-900 mb-2">
-          <span className="font-semibold">{postData.restaurantHandle || postData.restaurantName}</span> {postData.caption}
-        </p>
+        {/* Caption Header with Edit Button */}
+        <div className="flex items-center justify-between mb-2">
+          <span className="font-semibold text-sm text-gray-900">{postData.restaurantHandle || postData.restaurantName}</span>
+          {!isEditingCaption && (
+            <button
+              onClick={() => setIsEditingCaption(true)}
+              className="p-1 text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              <Edit3 className="w-3 h-3" />
+            </button>
+          )}
+        </div>
+
+        {/* Caption Content */}
+        {isEditingCaption ? (
+          <div className="space-y-2">
+            <textarea
+              value={editedCaption}
+              onChange={(e) => setEditedCaption(e.target.value)}
+              className="w-full p-2 text-sm border border-gray-200 rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+              rows={3}
+              placeholder="Enter your caption..."
+            />
+            <div className="flex gap-2">
+              <button
+                onClick={handleSaveCaption}
+                className="flex items-center gap-1 px-2 py-1 text-xs bg-green-50 text-green-600 rounded hover:bg-green-100 transition-colors"
+              >
+                <Check className="w-3 h-3" />
+                Save
+              </button>
+              <button
+                onClick={handleCancelEdit}
+                className="flex items-center gap-1 px-2 py-1 text-xs bg-gray-50 text-gray-600 rounded hover:bg-gray-100 transition-colors"
+              >
+                <X className="w-3 h-3" />
+                Cancel
+              </button>
+              <button
+                onClick={handleRegenerateCaption}
+                className="flex items-center gap-1 px-2 py-1 text-xs bg-purple-50 text-purple-600 rounded hover:bg-purple-100 transition-colors"
+              >
+                <Sparkles className="w-3 h-3" />
+                AI Regenerate
+              </button>
+            </div>
+          </div>
+        ) : (
+          <p className="text-sm text-gray-900 mb-2">
+            {editedCaption}
+          </p>
+        )}
+
+        {/* Hashtags */}
         <div className="flex flex-wrap gap-1">
           {postData.hashtags.slice(0, 6).map((tag, index) => (
             <span key={index} className="text-xs text-blue-600">

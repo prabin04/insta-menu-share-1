@@ -42,8 +42,8 @@ const QRScanner = () => {
       name: "Truffle Arancini",
       description: "Delicate truffle arancini with aged parmesan and micro herbs",
       price: "$24.00",
-      image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=600&h=600&fit=crop&q=80",
-      restaurantName: "Bella Vista",
+      image: "/menu.webp",
+      restaurantName: "Svang",
       location: "New York, NY"
     },
     {
@@ -51,8 +51,8 @@ const QRScanner = () => {
       name: "Wagyu Beef Tenderloin",
       description: "Pan-seared wagyu beef with cherry gastrique and seasonal vegetables",
       price: "$68.00",
-      image: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=600&h=600&fit=crop&q=80",
-      restaurantName: "Bella Vista",
+      image: "/menu.webp",
+      restaurantName: "Svang",
       location: "New York, NY"
     },
     {
@@ -60,8 +60,8 @@ const QRScanner = () => {
       name: "Chocolate Lava Cake",
       description: "Decadent chocolate soufflé with vanilla bean ice cream",
       price: "$18.00",
-      image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600&h=600&fit=crop&q=80",
-      restaurantName: "Bella Vista", 
+      image: "/menu.webp",
+      restaurantName: "Svang", 
       location: "New York, NY"
     }
   ];
@@ -178,6 +178,28 @@ const QRScanner = () => {
       title: "Caption Copied!",
       description: "The complete caption has been copied to your clipboard",
     });
+  };
+
+  const handleCaptionChange = (newCaption: string) => {
+    setGeneratedPost(prev => prev ? { ...prev, caption: newCaption } : null);
+  };
+
+  const regenerateCaption = async () => {
+    if (!menuItem) return;
+    
+    setIsGenerating(true);
+    
+    // Simulate AI regeneration
+    setTimeout(() => {
+      const newCaption = generateCaption(menuItem);
+      setGeneratedPost(prev => prev ? { ...prev, caption: newCaption } : null);
+      setIsGenerating(false);
+      
+      toast({
+        title: "Caption Regenerated!",
+        description: "New AI-generated caption is ready",
+      });
+    }, 1500);
   };
 
   if (isLoading) {
@@ -372,6 +394,8 @@ const QRScanner = () => {
                     }}
                     onCopyCaption={copyCaption}
                     onDownloadImage={downloadPost}
+                    onRegenerateCaption={regenerateCaption}
+                    onCaptionChange={handleCaptionChange}
                   />
                 </div>
               )}
